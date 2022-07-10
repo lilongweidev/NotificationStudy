@@ -3,8 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/AndroidStudioProjects/NotificationStudy/app/src/main/res/drawable/ic_next.xml" value="0.1495" />
+        <entry key="..\:/Android/AndroidStudioProjects/NotificationStudy/app/src/main/res/drawable/ic_next_black.xml" value="0.153" />
+        <entry key="..\:/Android/AndroidStudioProjects/NotificationStudy/app/src/main/res/drawable/ic_play.xml" value="0.1495" />
+        <entry key="..\:/Android/AndroidStudioProjects/NotificationStudy/app/src/main/res/drawable/ic_play_black.xml" value="0.153" />
+        <entry key="..\:/Android/AndroidStudioProjects/NotificationStudy/app/src/main/res/drawable/ic_previous.xml" value="0.1495" />
+        <entry key="..\:/Android/AndroidStudioProjects/NotificationStudy/app/src/main/res/drawable/ic_previous_black.xml" value="0.153" />
         <entry key="..\:/Android/AndroidStudioProjects/NotificationStudy/app/src/main/res/layout/activity_details.xml" value="0.22" />
         <entry key="..\:/Android/AndroidStudioProjects/NotificationStudy/app/src/main/res/layout/activity_main.xml" value="0.3333333333333333" />
+        <entry key="..\:/Android/AndroidStudioProjects/NotificationStudy/app/src/main/res/layout/layout_custom_notification.xml" value="0.22" />
+        <entry key="..\:/Android/AndroidStudioProjects/NotificationStudy/app/src/main/res/layout/layout_custom_notification_big.xml" value="0.16666666666666666" />
       </map>
     </option>
   </component>

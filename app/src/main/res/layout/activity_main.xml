@@ -32,4 +32,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_show_reply" />
+
+    <Button
+        android:id="@+id/btn_show_custom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="显示自定义通知"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_show_banner" />
 </androidx.constraintlayout.widget.ConstraintLayout>

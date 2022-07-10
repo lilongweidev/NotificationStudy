@@ -1,5 +1,6 @@
 package com.llw.notification
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.widget.RemoteViews
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +47,12 @@ class MainActivity : AppCompatActivity() {
     //横幅通知
     private lateinit var bannerNotification: Notification
 
+    //常驻通知
+    private lateinit var permanentNotification: Notification
+
+    //自定义通知
+    private lateinit var customNotification: Notification
+
     //通知Id
     private val notificationId = 1
 
@@ -53,6 +61,12 @@ class MainActivity : AppCompatActivity() {
 
     //横幅通知Id
     private val bannerNotificationId = 3
+
+    //常驻通知Id
+    private val permanentNotificationId = 4
+
+    //自定义通知Id
+    private val customNotificationId = 5
 
     //开启横幅通知返回
     private val bannerLauncher =
@@ -72,6 +86,9 @@ class MainActivity : AppCompatActivity() {
         initNotification()
         initReplyNotification()
         initBannerNotification()
+        initCustomNotification()
+        //显示常驻通知
+        showPermanentNotification()
         //显示通知
         binding.btnShow.setOnClickListener {
             notificationManager.notify(notificationId, notification)
@@ -86,6 +103,10 @@ class MainActivity : AppCompatActivity() {
             if (openBannerNotification()) {
                 notificationManager.notify(bannerNotificationId, bannerNotification)
             }
+        }
+        //显示自定义通知
+        binding.btnShowCustom.setOnClickListener {
+            notificationManager.notify(customNotificationId, customNotification)
         }
     }
 
@@ -185,6 +206,55 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * 显示常驻通知
+     */
+    private fun showPermanentNotification() {
+        //构建回复pendingIntent
+        val permanentIntent = Intent(this, MainActivity::class.java)
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, permanentIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        //构建通知
+        permanentNotification = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel("permanent", "我一直存在", importance)
+            NotificationCompat.Builder(this, "permanent")
+        } else {
+            NotificationCompat.Builder(this)
+        }.apply {
+            setSmallIcon(R.mipmap.ic_launcher)//小图标（显示在状态栏）
+            setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher))//大图标（显示在通知上）
+            setContentTitle("你在努力些什么？")//标题
+            setContentText("搞钱！搞钱！还是搞钱！")//内容
+            setWhen(System.currentTimeMillis())//通知显示时间
+            setContentIntent(pendingIntent)
+        }.build()
+        permanentNotification.flags = Notification.FLAG_ONGOING_EVENT
+        notificationManager.notify(permanentNotificationId, permanentNotification)
+    }
+
+    /**
+     * 初始化自定义通知
+     */
+    @SuppressLint("RemoteViewLayout")
+    private fun initCustomNotification() {
+        //RemoteView
+        val remoteViews = RemoteViews(packageName, R.layout.layout_custom_notification)
+        val bigRemoteViews = RemoteViews(packageName, R.layout.layout_custom_notification_big)
+        customNotification = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel("custom", "自定义通知", importance)
+            NotificationCompat.Builder(this, "custom")
+        } else {
+            NotificationCompat.Builder(this)
+        }.apply {
+            setSmallIcon(R.mipmap.ic_launcher)//小图标（显示在状态栏）
+            setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            setCustomContentView(remoteViews)
+            setCustomBigContentView(bigRemoteViews)
+            setOnlyAlertOnce(true)
+            setOngoing(true)
+        }.build()
+    }
+
+    /**
      * 创建通知渠道
      */
     @RequiresApi(Build.VERSION_CODES.O)
@@ -193,8 +263,15 @@ class MainActivity : AppCompatActivity() {
             NotificationChannel(channelId, channelName, importance)
         )
 
+    /**
+     * 创建横幅通知
+     */
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createBannerNotificationChannel(channelId: String, channelName: String, importance: Int) =
+    private fun createBannerNotificationChannel(
+        channelId: String,
+        channelName: String,
+        importance: Int
+    ) =
         notificationManager.createNotificationChannel(
             NotificationChannel(channelId, channelName, importance).apply {
                 description = "提醒式通知"//渠道描述
@@ -205,4 +282,5 @@ class MainActivity : AppCompatActivity() {
                 setSound(null, null)//没有提示音
             }
         )
+
 }
